@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="/static/echarts.min.js"></script>
+</head>
+<body style="background-color:rgb(226, 193, 193);">
+
+    <div class="container">
+        <h1 class="text-center">STATISTIC OF IVORY COAST POPULATION </h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Tableau Recap</h1>
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                        <th scope="col">Population</th>
+                        <th scope="col">Nbre Habitant</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in population %}
+                        <tr>
+                            <th scope="row">{{ item.nom }}</th>
+                            <td>{{ item.nbre_habitant }}</td>
+                        </tr>
+                        {% endfor %}
+
+                        <!-- <tr>
+                            <th scope="row">Bété</th>
+                            <td>15 500</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Dioula</th>
+                            <td>30 000</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Baoulé</th>
+                            <td>30 000</td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Lobi</th>
+                            <td>5 000</td>
+                        </tr> -->
+
+                    </tbody>
+                </table> 
+                <!-- <div id="main" style="width:100%; height:400px;"></div> -->
+            </div>
+            <hr>
+            <div class="col-md-6">
+                <h1>Diagramme de la Population </h1>
+                <div id="mainlang" style="width:100%; height:400px;"></div>
+            </div>
+            <hr>
+            <!-- <div class="col-md-6">
+                <div id="maingaugelang" style="width:100%; height:400px;"></div>
+            </div> -->
+
+        </div>
+        
+    </div>
+    
+
+
+    <script type="text/javascript">
+        // based on prepared DOM, initialize echarts instance
+        // var myChart = echarts.init(document.getElementById('main'));
+        var myPieLang = echarts.init(document.getElementById('mainlang'));
+        // var myGaugeLang = echarts.init(document.getElementById('maingaugelang'));
+
+        // specify chart configuration item and data
+        // var option = {
+        //     title: {
+        //         text: 'ECharts entry example'
+        //     },
+        //     tooltip: {},
+        //     legend: {
+        //         data:['Sales']
+        //     },
+        //     xAxis: {
+        //         data: ["shirt","cardign","chiffon shirt","pants","heels","socks"]
+        //     },
+        //     yAxis: {},
+        //     series: [{
+        //         name: 'Sales',
+        //         type: 'line',
+        //         data: [5, 20, 36, 10, 10, 20]
+        //     }]
+        // };
+
+        
+        var optionlang = {
+            title : {
+                text: 'Population of Ivory Coast',
+                subtext: 'Statistic',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: [
+                    {% for item in population %}
+                    '{{ item.nom }}',
+                    {% endfor %}
+                    ]
+            },
+            series : [
+                {
+                    name: 'Population',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {% for item in population %}
+                        {value:{{ item.nbre_habitant }}, name:'{{ item.nom }}'},
+                        {% endfor %}
+                        
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // var optionGaugelang = {
+        //     title : {
+        //         text: 'Nbre Candidate in ligne',
+        //         x:'center'
+        //     },
+        //     tooltip : {
+        //         formatter: "{a} <br/>{b} : {c}%"
+        //     },
+        //     toolbox: {
+        //         feature: {
+        //             restore: {},
+        //             saveAsImage: {}
+        //         }
+        //     },
+        //     series: [
+        //         {
+        //             name: 'Nbre Candidate in ligne',
+        //             type: 'gauge',
+        //             detail: {formatter:'{value}%'},
+        //             data: [{value: 50, name: 'Nbre'}]
+        //         }
+        //     ]
+        // };
+
+        // setInterval(function () {
+        //     optionGaugelang.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+        //     myGaugeLang.setOption(optionGaugelang, true);
+        // },2000);
+
+        // use configuration item and data specified to show chart
+        // myChart.setOption(option);
+        myPieLang.setOption(optionlang);
+        // myGaugeLang.setOption(optionGaugelang);
+    </script>
+</body>
+</html>
